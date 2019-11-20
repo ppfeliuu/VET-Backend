@@ -23,8 +23,8 @@ const corsOptions = {
 }
 
 //Habilitar cors
-app.use( cors(corsOptions) );
-// app.use(cors());
+// app.use( cors(corsOptions) );
+app.use(cors());
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.BD_URL, {
