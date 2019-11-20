@@ -8,6 +8,22 @@ require('dotenv').config({path: 'variables.env'});
 //crear el server
 const app = express();
 
+
+
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.BD_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
+
+mongoose.connection.on('error', (error) => {
+    console.log(error);
+})
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded( {extended: true }));
+
 //Cors Options
 const whitelist = [process.env.FRONTEND_URL];
 const corsOptions = {
@@ -23,22 +39,7 @@ const corsOptions = {
 }
 
 //Habilitar cors
-// app.use( cors(corsOptions) );
-app.use(cors());
-
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.BD_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-});
-
-mongoose.connection.on('error', (error) => {
-    console.log(error);
-})
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded( {extended: true }));
+app.use(cors(corsOptions));
 
 app.use('/', routes());
 
